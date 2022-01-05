@@ -2,22 +2,29 @@ package me.weekbelt;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class ProfileTest {
 
-    @Test
-    public void matchAnswersFalseWhenMustMatchCriteriaNotMet() throws Exception {
-        // given
-        Profile profile = new Profile("Bull Hockey, Inc.");
-        Question question = new BooleanQuestion(1, "Got bonuses?");
-        Answer profileAnswer = new Answer(question, Bool.FALSE);
-        profile.add(profileAnswer);
+    private Profile profile;
 
-        Criteria criteria = new Criteria();
-        Answer criteriaAnswer = new Answer(question, Bool.TRUE);
-        Criterion criterion = new Criterion(criteriaAnswer, Weight.MustMatch);
-        criteria.add(criterion);
+    private BooleanQuestion question;
+
+    private Criteria criteria;
+
+    @BeforeEach
+    public void create() {
+        profile = new Profile("Bull Hockey, Inc.");
+        question = new BooleanQuestion(1, "Got bonuses?");
+        criteria = new Criteria();
+    }
+
+    @Test
+    public void matchAnswersFalseWhenMustMatchCriteriaNotMet() {
+        // given
+        profile.add(new Answer(question, Bool.FALSE));
+        criteria.add(new Criterion(new Answer(question, Bool.TRUE), Weight.MustMatch));
 
         // when
         boolean matches = profile.matches(criteria);
@@ -26,19 +33,11 @@ class ProfileTest {
         assertThat(matches).isFalse();
     }
 
-
     @Test
-    public void matchAnswersTrueForAnyDontCareCriteria() throws Exception {
+    public void matchAnswersTrueForAnyDontCareCriteria() {
         // given
-        Profile profile = new Profile("Bull Hockey, Inc.");
-        Question question = new BooleanQuestion(1, "Got milk?");
-        Answer profileAnswer = new Answer(question, Bool.FALSE);
-        profile.add(profileAnswer);
-
-        Criteria criteria = new Criteria();
-        Answer criteriaAnswer = new Answer(question, Bool.TRUE);
-        Criterion criterion = new Criterion(criteriaAnswer, Weight.DontCare);
-        criteria.add(criterion);
+        profile.add(new Answer(question, Bool.FALSE));
+        criteria.add(new Criterion(new Answer(question, Bool.TRUE), Weight.DontCare));
 
         // when
         boolean matches = profile.matches(criteria);
