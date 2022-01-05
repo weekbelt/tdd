@@ -21,28 +21,22 @@ class ProfileTest {
     }
 
     @Test
-    public void matchAnswersFalseWhenMustMatchCriteriaNotMet() {
-        // given
+    public void matches() {
+        Profile profile = new Profile("Bull Hockey, Inc.");
+        Question question = new BooleanQuestion(1, "Got bonuses?");
+
+        // must-match 항목이 맞지 않으면 false
         profile.add(new Answer(question, Bool.FALSE));
+        Criteria criteria = new Criteria();
         criteria.add(new Criterion(new Answer(question, Bool.TRUE), Weight.MustMatch));
 
-        // when
-        boolean matches = profile.matches(criteria);
+        assertThat(profile.matches(criteria)).isFalse();
 
-        // then
-        assertThat(matches).isFalse();
-    }
-
-    @Test
-    public void matchAnswersTrueForAnyDontCareCriteria() {
-        // given
+        // don't care 항목에 대해서는 true
         profile.add(new Answer(question, Bool.FALSE));
+        criteria = new Criteria();
         criteria.add(new Criterion(new Answer(question, Bool.TRUE), Weight.DontCare));
 
-        // when
-        boolean matches = profile.matches(criteria);
-
-        // then
-        assertThat(matches).isTrue();
+        assertThat(profile.matches(criteria)).isTrue();
     }
 }
