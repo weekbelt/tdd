@@ -1,4 +1,4 @@
-package me.weekbelt;
+package me.weekbelt.domain;
 
 import java.util.ArrayList;
 import java.util.List;

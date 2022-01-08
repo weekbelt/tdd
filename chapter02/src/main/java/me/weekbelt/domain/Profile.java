@@ -1,4 +1,4 @@
-package me.weekbelt;
+package me.weekbelt.domain;
 
 import java.util.HashMap;
 import java.util.Map;

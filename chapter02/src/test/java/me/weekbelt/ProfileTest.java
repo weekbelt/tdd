@@ -2,6 +2,14 @@ package me.weekbelt;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import me.weekbelt.domain.Answer;
+import me.weekbelt.domain.Bool;
+import me.weekbelt.domain.BooleanQuestion;
+import me.weekbelt.domain.Criteria;
+import me.weekbelt.domain.Criterion;
+import me.weekbelt.domain.Profile;
+import me.weekbelt.domain.Question;
+import me.weekbelt.domain.Weight;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

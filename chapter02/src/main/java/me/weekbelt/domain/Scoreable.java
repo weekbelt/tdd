@@ -1,4 +1,4 @@
-package me.weekbelt;
+package me.weekbelt.domain;
 
 @FunctionalInterface
 public interface Scoreable {
