@@ -4,35 +4,35 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
+import me.weekbelt.controller.QuestionController;
 
 public class StatCompiler {
 
-    static Question q1 = new BooleanQuestion("Tuition reimbursement?");
-    static Question q2 = new BooleanQuestion("Relocation package?");
-
-    static class QuestionController {
-
-        Question find(int id) {
-            if (id == 1) {
-                return q1;
-            } else {
-                return q2;
-            }
-        }
-    }
-
     private final QuestionController controller = new QuestionController();
 
-    public Map<String, Map<Boolean, AtomicInteger>> responsesByQuestion(List<BooleanAnswer> answers) {
-        Map<Integer, Map<Boolean, AtomicInteger>> responses = new HashMap<>();
-        answers.forEach(answer -> incrementHistogram(responses, answer));
-        return convertHistogramIdsToText(responses);
+    public Map<Integer, String> questionText(List<BooleanAnswer> answers) {
+        Map<Integer, String> questions = new HashMap<>();
+        answers.forEach(answer -> {
+            if (!questions.containsKey(answer.getQuestionId())) {
+                questions.put(answer.getQuestionId(), controller.find(answer.getQuestionId()).getText());
+            }
+        });
+        return questions;
     }
 
-    private Map<String, Map<Boolean, AtomicInteger>> convertHistogramIdsToText(Map<Integer, Map<Boolean, AtomicInteger>> responses) {
+    public Map<String, Map<Boolean, AtomicInteger>> responsesByQuestion(
+        List<BooleanAnswer> answers, Map<Integer, String> questions) {
+        Map<Integer, Map<Boolean, AtomicInteger>> responses = new HashMap<>();
+        answers.forEach(answer -> incrementHistogram(responses, answer));
+        return convertHistogramIdsToText(responses, questions);
+    }
+
+    private Map<String, Map<Boolean, AtomicInteger>> convertHistogramIdsToText(
+        Map<Integer, Map<Boolean, AtomicInteger>> responses,
+        Map<Integer, String> questions) {
         Map<String, Map<Boolean, AtomicInteger>> textResponses = new HashMap<>();
-        responses.keySet().forEach(id ->
-            textResponses.put(controller.find(id).getText(), responses.get(id)));
+        responses.keySet()
+            .forEach(id -> textResponses.put(questions.get(id), responses.get(id)));
         return textResponses;
     }
 

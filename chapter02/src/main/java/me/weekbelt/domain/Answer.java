@@ -2,9 +2,9 @@ package me.weekbelt.domain;
 
 public class Answer {
 
-    private Question question;
+    private final Question question;
 
-    private int i;
+    private final int i;
 
     public Answer(Question question, int i) {
         this.question = question;

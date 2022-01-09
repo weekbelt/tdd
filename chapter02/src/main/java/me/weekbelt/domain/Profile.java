@@ -29,9 +29,12 @@ public class Profile {
         boolean kill = false;
         boolean anyMatches = false;
         for (Criterion criterion : criteria) {
+            // question에 대한 Answer를 호출
             Answer answer = answers.get(criterion.getAnswer().getQuestionText());
+            // Profile의 Answer와 Criteria의 Answer이 match이거나 Don't Care인 경우 match = true
             boolean match = criterion.getWeight() == Weight.DontCare || answer.match(criterion.getAnswer());
 
+            // Profile의 Answer와 Criteria의 Answer가 맞지 않고 기준이 무조건 맞아야 한다면 kill = true
             if (!match && criterion.getWeight() == Weight.MustMatch) {
                 kill = true;
             }
